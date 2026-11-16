@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>把陪驾团队的学员、课时、约课和统计放进一套系统 · 张浩然</title>
+<meta name="description" content="把陪驾团队的学员、课时、约课和统计放进一套系统，已部署到阿里云服务器供业务使用。">
+<meta name="theme-color" content="#f3efe6">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<link rel="stylesheet" href="../assets/css/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23141516'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='17' fill='%23f3efe6'%3EZ%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+<div class="mesh" aria-hidden="true"><span class="m1"></span><span class="m2"></span><span class="m3"></span><span class="m4"></span></div>
+
+<header class="nav">
+  <div class="wrap">
+    <div class="nav__bar glass">
+      <a class="nav__brand" href="../index.html"><i></i>张浩然 · 项目展示</a>
+      <nav class="nav__links">
+        <a href="baobiao.html">01 自动报表</a>
+        <a href="kefu.html">02 AI 客服</a>
+        <a href="peijia.html" class="is-active">03 陪驾系统</a>
+      </nav>
+      <div class="nav__status"><i></i><span>已上线阿里云 · HTTPS</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="project-main">
+  <section class="wrap proj-hero">
+    <a class="crumb glass" href="../index.html#projects" data-reveal style="--i:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>全部项目</a>
+    <div class="mono" data-reveal style="--i:0">项目 03 · 2026.11 – 至今</div>
+    <h1 class="title-system" data-reveal style="--i:1"><span class="title-phrase">把陪驾团队的</span><span class="title-phrase">学员、课时、约课和统计</span><br class="br-desktop"><span class="title-phrase">放进一套系统</span></h1>
+    <dl class="meta project-overview" data-reveal style="--i:2">
+      <div class="meta__item meta__item--blue"><dt>原来</dt><dd>以人工方式运转：约课登记在 Excel 表格中，剩余课时、收入和教练课量依赖人工计算，多人同时排课易冲突。</dd></div>
+      <div class="meta__item meta__item--green"><dt>做了什么</dt><dd>确认需求、制定钱与课时规则，完成学员、约课、统计系统。按文员和客服反馈持续更新。</dd></div>
+      <div class="meta__item meta__item--purple"><dt>结果</dt><dd>一套系统管起建档、交费、约课、回访和统计；约课点日期就能排，统计随时出数。已交付，团队每天在用。</dd></div>
+    </dl>
+    <dl class="meta" data-reveal style="--i:3">
+      <div class="meta__item meta__item--blue"><dt>我的角色</dt><dd>需求确认、钱与课时规则、权限分工、验收、部署与运维</dd></div>
+      <div class="meta__item meta__item--green"><dt>状态</dt><dd>已交付，文员和客服每天在用；按业务反馈持续更新</dd></div>
+      <div class="meta__item meta__item--purple"><dt>技术</dt><dd>Python · Django · SQLite · Ubuntu · Nginx · HTTPS · 自动备份 · Codex · Claude Code</dd></div>
+    </dl>
+  </section>
+
+  <section class="wrap" data-reveal="scale">
+    <figure class="proj-cover"><img src="../assets/img/peijia/v2/students.png" alt="陪驾管理系统学员列表"></figure>
+  </section>
+
+  <div class="wrap proj-body">
+    <div class="proj-body__rail">
+    <nav class="toc" aria-label="本页目录">
+      <a href="#problem"><i>01</i>原来的问题</a>
+      <a href="#system"><i>02</i>系统做了什么</a>
+      <a href="#result"><i>03</i>实际效果</a>
+      <a href="#fix"><i>04</i>上线后解决的问题</a>
+      <a href="#role"><i>05</i>我的职责</a>
+    </nav>
+    </div>
+
+    <div class="proj-body__content">
+      <section class="block" id="problem" data-reveal>
+        <div class="block__head"><span class="block__idx">01</span><h2>原来的问题</h2></div>
+        <div class="prose"><p>陪驾业务原以人工方式运转，约课登记在 Excel 表格中，格式不统一；<strong>剩余课时、收入和各教练课量</strong>依赖人工计算，效率低且易出错。找人先查序号，录课要切换多个表。</p><p>两名客服同时操作，可能<strong>重复约同车同时段</strong>；接送间隔靠人记，表格不查冲突。</p><p>交费、加钟、退款散在各表；旧资料有重复编号、手改余额，需逐条核对。</p></div>
+      </section>
+
+      <section class="block" id="system" data-reveal>
+        <div class="block__head"><span class="block__idx">02</span><h2>系统做了什么</h2></div>
+        <div class="prose"><p>供几人使用的内部系统，分员工端和教练端。业务从建档到统计分五步。</p></div>
+        <div class="flow">
+          <div><b>学员建档</b><small>搜姓名或电话就能找到人，车型、分店、教练用下拉选项录入。</small></div>
+          <div><b>交费与课时</b><small>初报、加钟、退款各记一条流水；剩余课时由流水算出，不许直接改余额。</small></div>
+          <div><b>约课</b><small>按教练、按天看时间表；新建约课自动查冲突和接送间隔。</small></div>
+          <div><b>完成扣课</b><small>扣课时和余额检查在同一个数据库事务里；只有管理员能完成扣课。</small></div>
+          <div class="is-out"><b>回访与统计</b><small>回访提醒按天数标黄标红；月报按分店、教练、渠道汇总，可导出 Excel。</small></div>
+        </div>
+        <details class="project-details"><summary>展开看细节</summary><div class="project-details__body"><div class="prose"><p>金额按“分”、课时按“半小时”存整数，<strong>不用浮点数</strong>。流水只增不改，录错须作废或更正并写原因；业务数据不真删。所有写操作记录操作人、时间、修改内容和原值。</p><p>员工可建档、录交费、约课和取消。完成扣课、补录练车、扣课爽约<strong>仅管理员可操作</strong>；教练只看自己的课与课时。登录、权限、表单、迁移使用 Django 自带功能。</p></div></div></details>
+      </section>
+
+      <section class="block" id="result" data-reveal>
+        <div class="block__head"><span class="block__idx">03</span><h2>实际效果</h2></div>
+        <div class="kpis">
+          <div class="kpi"><b class="num">一套系统</b><span>原先依赖 Excel 和人工计算的建档、交费、约课、回访、统计，现在在一套系统中几步完成。</span></div>
+          <div class="kpi"><b class="num">点选约课</b><span>按日期点选、按教练看时间表，车辆冲突和接送间隔当场提醒；在外面用手机也能约。</span></div>
+          <div class="kpi"><b class="num">随时出数</b><span>随时查看教练当天练车小时、卖课笔数与平均单价、学员课时汇总、近 12 个月收入和渠道报名人数</span></div>
+        </div>
+        <p style="margin-top:16px;font-size:14px;color:var(--fg3)">547 名老学员迁入并逐条核对 · 1,409 条自动化测试 · 阿里云 HTTPS 与每日加密备份</p>
+        <div class="gallery">
+          <figure class="is-wide"><div class="shot"><img src="../assets/img/peijia/v2/reports.png" alt="陪驾管理系统统计页：收入、课时、报名趋势和渠道汇总，个人信息已遮挡" loading="lazy"></div><figcaption>统计页。净收入、卖出课时、平均单价、练车课时、新报名一屏看完；按日期和分店筛选，近 12 个月趋势、各渠道报名占比和交费汇总都能直接看，也能导出 Excel。</figcaption></figure>
+        </div>
+        <div class="demo-tabs" data-carousel role="region" aria-roledescription="carousel" aria-label="陪驾系统功能演示，共 10 页">
+          <div class="demo-tabs__rail">
+          <div class="demo-tabs__list" role="tablist" aria-label="陪驾系统功能演示" aria-orientation="horizontal">
+            <span class="demo-carousel__indicator" aria-hidden="true"></span>
+            <button type="button" id="demo-tab-students" role="tab" aria-selected="true" aria-controls="demo-panel-students" tabindex="0">学员列表</button>
+            <button type="button" id="demo-tab-detail" role="tab" aria-selected="false" aria-controls="demo-panel-detail" tabindex="-1">学员详情</button>
+            <button type="button" id="demo-tab-schedule" role="tab" aria-selected="false" aria-controls="demo-panel-schedule" tabindex="-1">约课</button>
+            <button type="button" id="demo-tab-timetable" role="tab" aria-selected="false" aria-controls="demo-panel-timetable" tabindex="-1">排课表</button>
+            <button type="button" id="demo-tab-payments" role="tab" aria-selected="false" aria-controls="demo-panel-payments" tabindex="-1">单据确认</button>
+            <button type="button" id="demo-tab-review" role="tab" aria-selected="false" aria-controls="demo-panel-review" tabindex="-1">回访</button>
+            <button type="button" id="demo-tab-reports" role="tab" aria-selected="false" aria-controls="demo-panel-reports" tabindex="-1">统计</button>
+            <button type="button" id="demo-tab-settings" role="tab" aria-selected="false" aria-controls="demo-panel-settings" tabindex="-1">设置</button>
+            <button type="button" id="demo-tab-mobile" role="tab" aria-selected="false" aria-controls="demo-panel-mobile" tabindex="-1">手机端</button>
+            <button type="button" id="demo-tab-coach" role="tab" aria-selected="false" aria-controls="demo-panel-coach" tabindex="-1">教练端</button>
+          </div>
+          </div>
+          <div class="demo-carousel__surface">
+          <div class="demo-carousel__captions"></div>
+          <div class="demo-carousel__stage">
+          <div class="demo-tabs__panel" id="demo-panel-students" role="tabpanel" aria-labelledby="demo-tab-students" tabindex="0">
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/students.png" alt="陪驾管理系统学员列表，个人信息已遮挡" width="2000" height="1093" loading="lazy"></div><figcaption>搜姓名或电话就能找到人，剩余课时、单价、回访状态一行看完</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel" id="demo-panel-detail" role="tabpanel" aria-labelledby="demo-tab-detail" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/detail.png" alt="陪驾管理系统学员详情，个人信息已遮挡" width="2000" height="1093" loading="lazy"></div><figcaption>档案、交费、课时流水、约课和跟踪记录在一页，常用操作都在顶部</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel" id="demo-panel-schedule" role="tabpanel" aria-labelledby="demo-tab-schedule" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/schedule.png" alt="陪驾管理系统约课，个人信息已遮挡" width="2000" height="1093" loading="lazy"></div><figcaption>按天看课量，今天待处理的课会提示：收款没确认就不能扣课</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel" id="demo-panel-timetable" role="tabpanel" aria-labelledby="demo-tab-timetable" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/timetable.png" alt="陪驾管理系统排课表，个人信息已遮挡" width="2000" height="1064" loading="lazy"></div><figcaption>按教练分列的时间表，空档直接点“约课”，自动查冲突和接送间隔</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel" id="demo-panel-payments" role="tabpanel" aria-labelledby="demo-tab-payments" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/payments.png" alt="陪驾管理系统单据确认，个人信息已遮挡" width="2000" height="1093" loading="lazy"></div><figcaption>管理员核对每笔交费，确认收款后才计入可用课时</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel" id="demo-panel-review" role="tabpanel" aria-labelledby="demo-tab-review" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/review.png" alt="陪驾管理系统回访，个人信息已遮挡" width="2000" height="1093" loading="lazy"></div><figcaption>体验课用完、课时过半等情况自动提醒回访</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel" id="demo-panel-reports" role="tabpanel" aria-labelledby="demo-tab-reports" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/reports.png" alt="陪驾管理系统统计，个人信息已遮挡" width="2000" height="1093" loading="lazy"></div><figcaption>净收入、卖出课时、平均单价、练车课时、新报名，按日期和分店随时看</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel" id="demo-panel-settings" role="tabpanel" aria-labelledby="demo-tab-settings" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/settings.png" alt="陪驾管理系统设置，个人信息已遮挡" width="2000" height="1093" loading="lazy"></div><figcaption>分店、教练与车号、渠道、付款方式、账号和操作日志</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel demo-tabs__panel--collage" id="demo-panel-mobile" role="tabpanel" aria-labelledby="demo-tab-mobile" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/mobile.png" alt="陪驾管理系统手机端：学员、约课卡片和统计三屏拼图，个人信息已遮挡" width="2694" height="1684" loading="lazy"></div><figcaption>文员和客服平时在电脑上用，约课常在外面用手机完成，所以手机端专门优化了约课流程，列表改成卡片、底部导航。</figcaption></figure>
+          </div>
+          <div class="demo-tabs__panel demo-tabs__panel--collage" id="demo-panel-coach" role="tabpanel" aria-labelledby="demo-tab-coach" tabindex="0" hidden>
+            <figure><div class="shot"><img src="../assets/img/peijia/v2/coach.png" alt="陪驾管理系统教练端：我的课、我的课时和反馈三屏拼图，演示数据" width="2359" height="1684" loading="lazy"></div><figcaption>教练用手机查看自己当天和本周的课、累计练车课时，练完给学员写反馈</figcaption></figure>
+          </div>
+          <button class="demo-carousel__arrow demo-carousel__arrow--prev" type="button" aria-label="上一页" aria-disabled="true" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+          <button class="demo-carousel__arrow demo-carousel__arrow--next" type="button" aria-label="下一页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
+          </div>
+          <p class="demo-carousel__count" role="status" aria-live="polite" aria-atomic="true">1 / 10<span class="demo-carousel__sr"> · 学员列表</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="block" id="fix" data-reveal>
+        <div class="block__head"><span class="block__idx">04</span><h2>上线后解决的问题</h2></div>
+        <div class="story">
+          <div class="before"><h3>问题</h3><p>迁移 547 名老学员时发现重复编号、手改余额和无记录加钟，需核对剩余课时。</p></div>
+          <div class="before"><h3>原因</h3><p>旧表无课时流水，手改余额无法还原每笔交费、加钟和扣课。</p></div>
+          <div class="after"><h3>改法</h3><p>我定下“不以旧余额覆盖真实扣课记录”的原则，逐条核差、批准更正清单后受控重导：</p><ul><li>7 人追加 30 小时更正。</li><li>3 人补建结转 22 小时。</li><li>2 人关联旧编号。</li></ul><p>核对报告确认后再部署。</p></div>
+          <div class="after"><h3>改完以后</h3><p>上线前后 19 张业务表逐字段不变，余额与流水 0 不一致；4 处余额差异均有对应记录。</p></div>
+        </div>
+      </section>
+
+      <section class="block" id="role" data-reveal>
+        <div class="block__head"><span class="block__idx">05</span><h2>我的职责</h2></div>
+        <dl class="roles">
+          <div><dt>需求确认</dt><dd>与负责人、文员、客服逐项确认；按试用反馈撤回员工维护基础资料权限、减少约课点击。</dd></div>
+          <div><dt>业务规则</dt><dd>制定钱与课时记法、权限和留痕；回访天数、接送间隔设为可配置默认值。</dd></div>
+          <div><dt>验收</dt><dd>逐轮检查电脑、手机截图；全量测试通过且迁移检查无变化才验收。</dd></div>
+          <div><dt>部署运维</dt><dd>负责阿里云、证书续期、每日加密备份与恢复演练；编写运维手册，故障按序排查。</dd></div>
+        </dl>
+        <details class="project-details"><summary>展开看细节</summary><div class="project-details__body"><div class="prose"><p>已部署阿里云 2 核 2G Ubuntu，使用 HTTPS。Nginx + gunicorn，Let's Encrypt 证书自动续期，后台提醒到期。<strong>每天凌晨加密备份</strong>保留 14 天，本机电脑开机时自动同步。</p></div></div></details>
+        <div class="tags" style="margin-top:26px">
+          <span>Python</span><span>Django</span><span>SQLite</span><span>pytest</span><span>Ubuntu</span><span>Nginx</span><span>gunicorn</span><span>Let's Encrypt</span><span>加密备份</span>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="wrap pager">
+    <a href="kefu.html"><span class="mono">上一个 · 02</span><b>← 微信会话知识库与 AI 客服</b></a>
+    <a href="../index.html#projects" class="is-next glass"><span class="mono">返回</span><b>全部项目 →</b></a>
+  </div>
+
+  <section class="wrap section" id="contact" aria-label="联系">
+      <div class="contact contact--bar" data-reveal="scale">
+        <div class="contact__intro">
+          <h2>聊聊项目，或者直接约面</h2>
+          <p>邮件和微信都可以。想看哪个系统的实际操作，可以线上演示</p>
+        </div>
+        <div class="contact__list">
+          <button class="copy" data-copy="cocozhr97@gmail.com"><small>邮箱</small><span data-copy-label>cocozhr97@gmail.com</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+          <button class="copy" data-copy="zhr777963"><small>微信</small><span data-copy-label>zhr777963</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+        </div>
+      </div>
+  </section>
+</main>
+
+<footer class="wrap footer">
+  <span>© 2026 张浩然</span>
+  <span>Project 03 / 03</span>
+</footer>
+
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

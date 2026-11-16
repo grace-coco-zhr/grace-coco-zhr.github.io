@@ -1,0 +1,6 @@
+/* 自托管子集字体：由 docs/build_fonts.py 生成，只含本站用到的字。国内网络打不开 Google Fonts 也能正常显示。 */
+@font-face{font-family:'Noto Serif SC';font-weight:600 700;font-style:normal;font-display:swap;src:url('../fonts/NotoSerifSC-600.woff2') format('woff2')}
+@font-face{font-family:'Noto Sans SC';font-weight:400;font-style:normal;font-display:swap;src:url('../fonts/NotoSansSC-400.woff2') format('woff2')}
+@font-face{font-family:'Noto Sans SC';font-weight:500;font-style:normal;font-display:swap;src:url('../fonts/NotoSansSC-500.woff2') format('woff2')}
+@font-face{font-family:'Noto Sans SC';font-weight:600;font-style:normal;font-display:swap;src:url('../fonts/NotoSansSC-600.woff2') format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-weight:400 500;font-style:normal;font-display:swap;src:url('../fonts/JetBrainsMono-500.woff2') format('woff2')}
