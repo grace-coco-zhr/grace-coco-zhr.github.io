@@ -174,15 +174,18 @@
     var count = group.querySelector(".demo-carousel__count");
     var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     var active = 0, desired = 0, busy = false, swipe = null, suppressClickUntil = 0;
-    var captionEls = panels.map(function (panel, index) {
-      var caption = document.createElement("div");
+    var captionData = panels.map(function (panel, index) {
+      var measure = document.createElement("div");
       var title = document.createElement("h3");
       var text = document.createElement("p");
-      caption.className = "demo-carousel__caption";
+      // 隐藏的尺寸占位保留最长文案的高度，切页时舞台不因换行而上下跳动。
+      measure.className = "demo-carousel__caption-measure";
+      measure.setAttribute("aria-hidden", "true");
+      measure.setAttribute("inert", "");
       title.textContent = tabs[index].textContent;
       text.textContent = panel.querySelector("figcaption").textContent;
-      caption.append(title, text);
-      captions.appendChild(caption);
+      measure.append(title, text);
+      captions.appendChild(measure);
       panel.hidden = false;
       panel.tabIndex = -1;
       // aria-label 提供页码和名称；aria-labelledby 会覆盖它，因此只在页签上保留关联。
@@ -194,8 +197,52 @@
       images[index].loading = "eager";
       images[index].draggable = false;
       images[index].addEventListener("load", function () { if (index === active) resizeStage(); });
-      return caption;
+      return { title: title.textContent, text: text.textContent };
     });
+    // 只有这一个元素显示文案；不再让多个文字层依靠 CSS 延时互相避让。
+    var caption = document.createElement("div");
+    var captionTitle = document.createElement("h3");
+    var captionText = document.createElement("p");
+    caption.className = "demo-carousel__caption is-current";
+    caption.append(captionTitle, captionText);
+    captions.appendChild(caption);
+    var captionIndex = -1, captionRevision = 0, captionAnimation = null;
+
+    async function showCaption(index) {
+      if (captionIndex === index) return;
+      var initial = captionIndex === -1;
+      captionIndex = index;
+      var revision = ++captionRevision;
+      // 先取当前视觉状态，再取消旧动画；快速切换也能从当前透明度平滑离场。
+      var currentStyle = getComputedStyle(caption);
+      var opacity = currentStyle.opacity;
+      var transform = currentStyle.transform;
+      if (captionAnimation) captionAnimation.cancel();
+      captionAnimation = null;
+      if (!initial) {
+        var fadeout = caption.animate([
+          { opacity: opacity, transform: transform },
+          { opacity: 0, transform: motion.matches ? "none" : "translateY(-4px)" }
+        ], { duration: 180, easing: "ease", fill: "forwards" });
+        captionAnimation = fadeout;
+        try { await fadeout.finished; } catch (error) { return; }
+        if (revision !== captionRevision) return;
+      }
+      // 此时旧文案已完全透明，替换同一组文本节点后才开始淡入。
+      captionTitle.textContent = captionData[index].title;
+      captionText.textContent = captionData[index].text;
+      if (initial) return;
+      var fadein = caption.animate([
+        { opacity: 0, transform: motion.matches ? "none" : "translateY(6px)" },
+        { opacity: 1, transform: "none" }
+      ], { duration: 260, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "forwards" });
+      captionAnimation = fadein;
+      fadeout.cancel();
+      try { await fadein.finished; } catch (error) { return; }
+      if (revision !== captionRevision) return;
+      fadein.cancel();
+      captionAnimation = null;
+    }
 
     function updateRail() {
       rail.classList.toggle("has-more", list.scrollWidth - list.clientWidth - list.scrollLeft > 2);
@@ -245,9 +292,8 @@
         panels[index].classList.toggle("is-neighbor", Math.abs(distance) === 1);
         panels[index].setAttribute("aria-hidden", String(!current));
         shots[index].tabIndex = current ? 0 : -1;
-        captionEls[index].classList.toggle("is-current", current);
-        captionEls[index].setAttribute("aria-hidden", String(!current));
       });
+      showCaption(active);
       [prev, next].forEach(function (button, index) {
         var unavailable = index === 0 ? active === 0 : active === panels.length - 1;
         button.setAttribute("aria-disabled", String(unavailable));
